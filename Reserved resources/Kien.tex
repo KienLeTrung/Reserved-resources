@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-
+\usepackage{verbatim}
 %KHOA BEGIN
 \usepackage{multirow}
 \usepackage{array}
@@ -78,21 +78,17 @@ Ultra-Reliable Low-Latency Communication is a new service in 5G with strict requ
 \section{Introduction} \label{I}
 In 5G New Radio (NR), Ultra-Reliable Low-Latency Communication (URLLC) is one of the key features specified by 3GPP to serve the applications such as augmented virtual reality, tactile internet and industrial automation. This new service poses a huge challenge due to a high demand of two conflicting factors: reliability and latency. The requirement for URLLC is specified in \cite{b6}: ``A general URLLC reliability requirement for one transmission of a packet is 10\textsuperscript{-5} for 32 bytes with a user plane latency of 1 ms''. Besides the baseline URLLC performance, the next release of 3GPP aims to achieve higher requirements: ``Higher reliability (up to 10\textsuperscript{-6}), higher availability, short latency in the order of 0.5 to 1 ms, depending on the use cases (factory automation, transport industry and electrical power distribution)''\cite{b8}.
 
-Thereby, new designs and techniques in physical layer are required to raise the overall performance of system.
-
 \subsection{Techniques accepted in 3GPP Release 15}\label{IAA}
 In Release 15, new aspects have been made and agreed by 3GPP to support URLLC. 
 
-One of the aspects is a permission to use larger subcarrier spacings (SCS). In 5G, SCS is allowed to have a value up to 240 kHz instead of an unique value of 15 kHz as in LTE \cite{ad2}. This decision brings down time alignment of packets arriving. 
+One of the aspects is a permission to use larger subcarrier spacings (SCS). In 5G, SCS is allowed to have a value up to 240 kHz instead of an unique value of 15 kHz as in LTE \cite{ad2}. This decision brings down transmission duration of packets . 
 
-The next aspect is about mini-slot based transmission that helps to reduce further time alignment of packets \cite{ad3}. A user (UE) can be scheduled in a period of one or several symbols rather than a whole slot. 
+The next aspect is about mini-slot based transmission that helps to reduce waiting time and transmission duration of packets \cite{ad3}. A user (UE) can be scheduled in a period of one or several symbols rather than a whole slot. 
 
-The third aspect is related to the uplink (UL) transmission in grant-free (GF) region to lessen time consumption of Scheduling Request (SR) and Uplink Grant (UL Grant)\cite{ad4}.
+The third aspect is related to the uplink (UL) transmission in grant-free (GF) region to lessen time consumption of Scheduling Request (SR) and Uplink Grant (UL Grant)\cite{ad4}. The gNB can configure a set of GF resources to one or more users with a periodicity defined by parameters in RRC from higher layer. When a UE is configured to transmit in GF resources and has data to transmit, it can transmit data immediately instead of sending SR and waiting for UL Grant as grant-based (GB) transmission.
 
 \subsection{Repetition problem in URLLC GF UL transmission}\label{IBB}
-As mentioned in \ref{IAA}, in UL transmission, the gNB can configure a set of grant-free resources to one or more users with a periodicity defined by parameters in RRC from higher layer. When a UE is configured to transmit in GF resources and has data to transmit, it can transmit data immediately instead of sending SR and waiting for UL Grant as grant-based (GB) transmission. For this reason, latency in transmission reduces remarkably so high priority UEs such as URLLC UEs are configured to transmit with such type of UL transmission.
-
-When the gNB configures the UEs with high priority and strict requirements to transmit in the GF regions, it also configures the number of repetitions K that the UEs need to carry out by a parameter repK from higher layer in order to guarantee transmission’s reliability. The UEs retransmit the packets automatically in the GF regions without waiting for HARQ feedback or UL grant from the gNB. However, the UEs are only allowed to do repetitions in one interval with a periodicity P (a set of allowed periodicities P are defined in \cite{ad5}) and prohibited to retransmit packet as configured by repK crossing boundary of that interval. This constraint is to help the gNB avoid a confusion in HARQ IDs of different HARQ processes. Therefore, depending on the arrival time of data in relation to the periodicity P, the number of repetitions might be smaller than the configured number because the UEs need to stop their transmission at the last transmission occasion in the period P.
+As mentioned in Section \ref{IAA}, in UL transmission, the gNB configures the UEs with high priority and strict requirements to transmit in the GF regions. In addition, it also configures the number of repetitions $K$ that these UEs need to carry out by a parameter repK from higher layer in order to guarantee transmission’s reliability. The UEs retransmit the packets automatically in the GF regions without waiting for HARQ feedback or UL grant from the gNB. However, the UEs are only allowed to do repetitions in one interval with a periodicity $P$ ranging from several symbols to several slots (a set of allowed periodicities $P$ is defined in \cite{ad5}) and prohibited to retransmit packet as configured by repK crossing boundary of that interval. This constraint is to help the gNB avoid a confusion in HARQ IDs of different HARQ processes. Therefore, depending on the arrival time of data in relation to the periodicity $P$, the number of repetitions might be smaller than the configured number because the UEs need to stop their transmission at the last transmission occasion in the period $P$.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.27]{fig1.png}}
@@ -100,7 +96,7 @@ When the gNB configures the UEs with high priority and strict requirements to tr
 \label{fig1}
 \end{figure}
 
-Fig.~\ref{fig1} illustrates the situation when the number of configured repetitions is not ensured due to the constraint of boundary of period P. In Fig.~\ref{fig1}, an interval P contains 4 GF occasions, the UE is configured to do 4 repetitions. In the first period, data comes before all the 4 GF occasions so the UE is able to do 4 repetitions for the first packet as configured. However, when data comes in the second period, there are only 3 GF occasions left in that period. This means that the UE only can carry out 3 repetitions that are less than the configured number. Similarly, in the fourth period, the UE only can transmit the packet 2 times.
+Fig.~\ref{fig1} illustrates the situation when the number of configured repetitions is not ensured due to the constraint of boundary of period $P$. In Fig.~\ref{fig1}, an interval $P$ contains 4 GF occasions, the UE is configured to do 4 repetitions. In the first period, data comes before all the 4 GF occasions so the UE is able to do 4 repetitions for the first packet as configured. However, when data comes in the second period, there are only 3 GF occasions left in that period. This means that the UE only can carry out 3 repetitions that are less than the configured number. Similarly, in the fourth period, the UE only can transmit the packet 2 times.
 
 It is evident that when the packet comes after the first GF occasions in a period, the UE transmits the packet with a smaller number than the number configured by repK. It degrades the performance of uplink transmission. The situation becomes more severe for the URLLC UEs with high reliability requirement. Moreover, latency of a transmission also increases. After the gNB receives repetitions less than K repetitions, if it cannot decode the packet, it sends a retransmission request through an UL grant with HARQ ID of the process and NDI set to 0. The UE retransmits data on resources allocated by the gNB. Nevertheless, time consumption in this operation is high because the UE needs to wait the gNB to decode the packets and transmit an UL grant if necessary.
 
@@ -111,14 +107,14 @@ In \cite{b1} and \cite{b2}, the repetitions are allowed to cross the boundary of
 
 Multiple configurations in GF region are proposed in \cite{b3} and \cite{b4}. A UE is configured with configurations having different time offsets so it can choose the nearest configuration to start a transmission and guarantee the number of repetitions. The main concern of multiple configurations is the control overhead because of signals used to configure the UE. The process to configure various configurations to the UE also causes delay. Moreover, if resources in the configurations are not overlapped, there will be an significant growth of resource consumption. In contrast, if the resources are overlapped, it might lead to a collision among transmissions of different UEs.
 
-\cite{b5} and \cite{b7} propose to use shared resource for URLLC repetitions to improve resource utilization. However, they do not count a constraint that the UE cannot do repetitions crossing the border of a period. If this constraint is not solved, it might lead to a number of repetitions smaller than the  number configured and transmission reliability is degraded. In addition, shared resources are allocated periodically with the same size for all transmission occasions. These two drawbacks bring an increase of resource consumption and a drop of reliability 
+\cite{b5} and \cite{b7} propose to use shared resource for URLLC repetitions to improve resource utilization. However, they do not count a constraint that the UE cannot do repetitions crossing the border of a period. If this constraint is not solved, it might lead to a number of repetitions smaller than the configured number. In addition, shared resources are allocated periodically with the same size for all transmission occasions. These two drawbacks bring an increase of resource consumption and a drop of reliability.
 
 In this work, an UL GF transmission scheme with reserved resources is described. Reserved resources are used and shared among the UEs when they need to transmit repetitions crossing the border of a transmission period P in order to achieve the target number of repetitions. These reserved resources have different sizes that are optimized based on the positions of their transmission occasions.  
 Firstly, reserved resources and calculations to optimize their sizes are presented in Section \ref{II}. The process allowing the UEs to access to these resources is also discussed. Section \ref{III} shows numerical results obtaining from the equations derived in diverse scenarios. Finally, Section \ref{IV} provides the concluding remarks for this work.
 
 \section{Strategy to ensure the configured number of repetitions in UL GF transmission}\label{II}
 
-\subsection{Rserved resources}\label{IIAA}
+\subsection{Reserved resources}\label{IIAA}
 To make the URLLC UEs achieve the strict requirements, a strategy to ensure that the UEs can transmit the number of repetitions as configured by repK from higher layer is indispensable. Reserved periodic resources are proposed to be created and assigned to multiple UEs by the gNB so that they are likely to retransmit data in case the transmissions in the reserved resources are necessary to ensure the configured number of repetitions. These reserved resources have the same periodicity as the GF resources.
 
 \begin{figure}[htbp]
@@ -129,7 +125,7 @@ To make the URLLC UEs achieve the strict requirements, a strategy to ensure that
 
 The use of reserved resources is shown in Fig.~\ref{fig2}. There are 2 UEs considered with GF resources in different bandwidth and each UE is configured with repK = 4. UE1's data comes after the first GF occasion in the first period so it only can do 3 repetitions in the period. In order to attain 4 repetitions, the UE1 retransmits data in the first reserved resource of the next period. Similarly, UE2's data arrives at the last GF occasion and only one repetition can be made. Thus, the UE2 uses the 3 reserved resources in the next period to achieve the configured number of repetitions.
 
-In the example, 4 repetitions are configured so 3 reserved resources are needed in the next period. To increase the efficiency of resource consumption, the reserved resources are shared among the UEs. The first reserved resource in Fig.~\ref{fig2} with 2 blocks is likely to be shared with more than 2 UEs while still attain the target collision probability being approximate to the collision probability in the GF resources. Similarly, the second and third reserved resources are also shared by a group with more than 2 UEs. With the same number of UEs, the required sizes of these reserved resources are smaller than the first one so as to guarantee the same target collision probability. The equation showing the relation among the number of UEs, the size of the reserved resources and the collision probability is derived in \ref{IICC}.
+In the example, 4 repetitions are configured so 3 reserved resources are needed in the next period. To increase the efficiency of resource consumption, the reserved resources are shared among the UEs. The first reserved resource in Fig.~\ref{fig2} with 2 blocks is likely to be shared with more than 2 UEs while still attain the target collision probability being approximate to the collision probability in the GF resources. Similarly, the second and third reserved resources are also shared by a group with more than 2 UEs. With the same number of UEs, the required sizes of these reserved resources are smaller than the first one so as to guarantee the same target collision probability. The equation showing the relation among the number of UEs, the size of the reserved resources and the collision probability is derived in Section \ref{IICC}.
 
 \subsection{System model}\label{IIBB}
 
@@ -139,12 +135,12 @@ In the example, 4 repetitions are configured so 3 reserved resources are needed 
 \label{fig3}
 \end{figure}
 
-The system in Fig.~\ref{fig3} considered to calculate collision probability in the reserved resources contains N UEs. These N UEs are configured by the gNB to transmit in the periodical GF resources with the number of repetitions K set by parameter repK. The GF resources in one frequency band can be shared among the UEs in a group. A period P corresponding to a HARQ process consists of GF transmission occasions equal to the number of repetitions K. The results derived below are also valid if the number of GF transmission occasions in a period are bigger than K. The reserved resources are configured periodically in each period P. These resources are shared among the N UEs to retransmit data in case the number of repetitions that they can carry out in one period are less than the configured one. Each reserved resource has size of M\textsubscript{i} blocks with index i indicating that the reserved resource is at the ith transmission occasion of a period. The size of each block is the same as that of the GF resource in one transmission occasion. 
+The system in Fig.~\ref{fig3} considered to calculate collision probability in the reserved resources contains N UEs. These N UEs are configured by the gNB to transmit in the periodical GF resources with the number of repetitions K set by parameter repK. The GF resources in one frequency band can be shared among the UEs in a group. A period $P$ corresponding to a HARQ process consists of GF transmission occasions equal to the number of repetitions K. The results derived below are also valid if the number of GF transmission occasions in a period are bigger than K. The reserved resources are configured periodically in each period $P$. These resources are shared among the N UEs to retransmit data in case the number of repetitions that they can carry out in one period are less than the configured one. Each reserved resource has size of M\textsubscript{i} blocks with index i indicating that the reserved resource is at the ith transmission occasion of a period. The size of each block is the same as that of the GF resource in one transmission occasion. 
 
-The arrival of data for each UE follows a Poisson process with $\lambda$ being the average number of random access events in an interval. $\lambda$ is calculated from the period between the GF resources T and an average packet inter-arrival time $\mu$: $\lambda$ = T$/\mu$.
+The arrival of data for each UE follows a Poisson process with the average number of random access events in an interval $\lambda$ calculated from the period between the GF resources T and an average packet inter-arrival time $\mu$: $\lambda$ = T$/\mu$.
 
 \subsection{Collision probability in reserved resources with random access}\label{IICC}
-With random access, the N UEs in system are allowed to use any block in the reserved resources of a specific transmission occasion if they need to do the transmissions in order to fulfil the configured number of repetitions.
+With random access, the N UEs in system are allowed to use any block in the reserved resources of a specific transmission occasion if they need to do the transmissions in order to fulfill the configured number of repetitions.
 
 The collision probability in the reserved resource at the first transmission occasion of a period (at t21 in Fig.~\ref{fig3}) is calculated as follow.
 
@@ -216,7 +212,7 @@ P_{ci} = 1 - (\frac{M_{i}-1+e^{-\lambda(K-i)}}{M_{i}})^{N-1},\label{eq9}
 From \eqref{eq9} with a set of parameters  $\lambda$, N, K, i and $P_{ci}$, the size of the reserved resources at any transmission occasion can be calculated. To guarantee the reliability of transmission in the reserved resources in comparison to that in the GF resources, the target probability $P_{ci}$ is chosen to be approximate to $P_{c\_GF}$ in \eqref{eq3}. If $P_{ci}$ is set to have the same value in all the reserved resources, the trend of reserved resources' size in terms of their positions in a period is: $M_1 > M_2 > M_3 > ... > M_{K-1}$. The size of the reserved resources to achieve a target probability decreases gradually from the first reserved resource to the last reserved resource in a period. The design of the reserved resources following this decreasing trend instead of using the same size for all of the reserved resource brings an efficiency of resource consumption because the size is optimized particularly for each reserved resource.
 
 \subsection{Group access to the reserved resources}\label{IIEE}
-In group access approach, one UE is only allowed to access and uses a specific part of the reserved resource pre-configured by the gNB. One part of the reserved resource can be assigned and shared among a group of the UEs. In an example, a group of the UE 1-3 is only permitted to access the resource blocks shown in Fig.~\ref{fig4}. On the other hand, other UE groups are also prohibited to access the resource blocks pre-configured to the UE 1-3. 
+In group access approach, one UE is only allowed to access and uses a specific part of the reserved resource pre-configured by the gNB. One part of the reserved resource is assigned and shared among a group of the UEs. For example, the UE 1-3 is only permitted to access the resource blocks as shown in Fig.~\ref{fig4}. On the other hand, other UE groups are also prohibited to access the resource blocks pre-configured to the UE 1-3. 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.35]{fig4.png}}
@@ -224,7 +220,7 @@ In group access approach, one UE is only allowed to access and uses a specific p
 \label{fig4}
 \end{figure}
 
-For a group of the UEs accessing to a part of the reserved resources, the collision probability is calculated by \eqref{eq9} as random access approach. The size of the whole reserved resource in each transmission occasion is sum of all parts assigned to the UE groups in order to guarantee a target probability. 
+For a group of the UEs accessing to a part of the reserved resources, the collision probability is calculated by \eqref{eq9} as random access approach. The size of the whole reserved resource in each transmission occasion is sum of all parts assigned to the UE groups to guarantee a target probability. 
 
 Simulation in Section \ref{III} shows that the sizes of the reserved resources for both random access and group access approach are the same to achieve an equal target probability. However, group access approach reduces the decoding burden in the gNB. To decode a retransmitted packet, the gNB only needs to search a part of the reserved resource instead of the entire reserved resource as random access approach. Thereby, power consumption and processing time drop dramatically. 
 
@@ -245,12 +241,12 @@ To avoid that problem, the UEs are assigned to different groups of the reserved 
 \end{figure}
 
 In each reserved resource, the collision probability is still the same as calculated from \eqref{eq9} but the overall reliability of a UE transmitting in the reserved resources at different transmission occasions will be improved with the hopping of the UEs to various groups in the different reserved resources.
-
+\begin{comment}
 \subsection{Explicit HARQ-ACK feedback}\label{IIFF}
 In UL GF transmission, there is no HARQ feedback transmitted from the gNB to the UE to inform whether data is decoded correctly or not. The mechanism used to terminate a transmission is time-based structure. The UEs carry out the repetitions automatically as configured and data is considered to be transmitted successfully after a certain timer configured by a parameter ConfiguredGrantTimer expires. If data is not decoded, the gNB sends a UL grant to allocate resources and request the UEs to retransmit data. With this mechanism, there is a waste of time and frequency resources for the unnecessary retransmissions in case the gNB can decode correctly data before the maximum number of repetitions or the end of the timer. Moreover, if the UEs need to use the reserved resources to attain the maximum number of repetitions, the redundant data transmitted might cause a collision with data of other UEs that really need to be transmitted in the reserved resource to achieve reliability.
 
 Therefore, when the UEs transmit less than the configured repetitions in a period and need to use the reserved resources, an explicit HARQ-ACK feedback is expected from the gNB to prevent the UEs from doing the unnecessary transmissions in the reserved resources. The presence of an explicit ACK feedback reduces resource consumption for retransmission, the sizes of the reserved resources as well as increases reliability of the transmission.
-
+\end{comment}
 \section{Numerical results and performance evaluation}\label{III}
 
 \subsection{Random access to the reserved resources}\label{IIIAA}
@@ -258,15 +254,30 @@ From \eqref{eq9}, the number of the UEs that the system can support can be found
 
 The simulation starts with the reserved resource in the first transmission occasion of a period. The set of parameters is $M_1=10, K=4, \lambda=1.25\times10^{-4}$.
 
-Fig.~\ref{fig7} shows collision probability in the reserved resource in the first transmission occasion in terms of the number of the UEs sharing that resource. From the graph, we see that if the target collision probability ($P_{c1}$) is 10\textsuperscript{-3}, the system can support 28 UEs in the first reserved resources.
+Fig.~\ref{fig7}\subref{7a} shows collision probability in the reserved resource in the first transmission occasion in terms of the number of the UEs sharing that resource. From the graph, we see that if the target collision probability ($P_{c1}$) is 10\textsuperscript{-3}, the system can support 28 UEs in the first reserved resources.
 
+\begin{figure}[htbp]
+\centering
+\subfloat[Collision probability with respect to the number of the UEs.\label{7a}]{%
+\includegraphics[scale=0.27]{fig7.png}}
+\hfill
+\qquad
+\subfloat[Collision probability of the second reserved resource.\label{7b}]{%
+\includegraphics[scale=0.27]{fig8.png}}
+\hfill
+\caption{Collision probability.}
+\label{fig7}
+\end{figure}
+
+\begin{comment}
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.32]{fig7.png}}
 \caption{Collision probability with respect to the number of the UEs.}
 \label{fig7}
 \end{figure}
+\end{comment}
 
-As mentioned in \ref{IIBB} and \ref{IICC}, the GF resources in a frequency band are able to be shared by a group of the UEs. 28 UEs calculated above can be divided in to 4 groups with 7 UEs in each group. The collision probability in the GF resources calculated from \eqref{eq2} is $7.5\times10^{-4}$. This probability is approximate to the collision probability of 10\textsuperscript{-3} in the reserved resource.
+As mentioned in Section \ref{IIBB} and \ref{IICC}, the GF resources in a frequency band can be shared by a group of the UEs. 28 UEs calculated above can be divided in to 4 groups with 7 UEs in each group. The collision probability in the GF resources calculated from \eqref{eq2} is $7.5\times10^{-4}$ that is approximate to the collision probability of 10\textsuperscript{-3} in the reserved resource.
 
 When all the parameters ($\lambda$, N, K and $P_{ci}$) are kept the same, the sizes of the reserved resources in the second and the third transmission occasions are calculated as
 %KHOA BEGIN
@@ -297,15 +308,17 @@ When all the parameters ($\lambda$, N, K and $P_{ci}$) are kept the same, the si
 
 The percentage of resources saved in comparison to using the same size of 10 resource blocks for all the resources is: $(1 - (10+7+3)/(10\times3))\times100\% = 33\%$.
 
-Fig.~\ref{fig8} illustrates the collision probability with respect to the size of the reserved resource in the second transmission occasion.
+Fig.~\ref{fig7}\subref{7b} illustrates collision probability with respect to the reserved resource's size in the second transmission occasion.
 
+\begin{comment}
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.32]{fig8.png}}
 \caption{Collision probability of the second reserved resource.}
 \label{fig8}
 \end{figure}
+\end{comment}
 
-Another scenarios is considered with a bigger number of repetitions: $M_1=10, K=8, \lambda=1.25\times10^{-4}$ .
+Another scenario is considered with a bigger number of repetitions: $M_1=10, K=8, \lambda=1.25\times10^{-4}$ .
 
 The system can support 12 UEs in the first reserved resources to achieve Pc target of 10\textsuperscript{-3}. These UEs can be divided into 2 groups with 6 UEs in one group that each group uses the GF resources in one bandwidth part. The collision probability in GF regions of a group of 6 UEs as scheduled above is: $6.25\times10^{-4}$.
 With 12 UEs, the sizes of the reserved resources in the transmission occasions are
@@ -333,7 +346,7 @@ The percentage of resources saved in comparison to using the same size of 10 res
 As can be seen from two scenarios, the use of reserved resources with optimization from \eqref{eq9} brings an efficiency of resource utilization, especially for high configured number of repetitions. The resources needed are less than the approach of choosing blindly the same sizes for all reserved resources in different transmission occasions while still guarantees the number of repetitions with a target reliability.
 
 \subsection{Group access to the reserved resources}\label{IIIBB}
-Group access is simulated with the same set of parameters as the first set in random access: $N = 28, K = 4, \lambda = 1.25\times10^{-4}$.
+Group access is simulated with the parameters as the first scenario in random access: $N = 28, K = 4, \lambda = 1.25\times10^{-4}$.
 
 28 UEs are divided into 4 groups of 7 UEs to access the reserved resources. Each group is only allowed to access the part of the reserved resources pre-configured to them. 
 
@@ -362,7 +375,7 @@ The resource consumption is equal for random access and group access to the rese
 
 \section{Conclusion}\label{IV}
 
-URLLC GF UL transmission demands an improvement in physical layer design in order to achieve the configured number of repetitions so that reliability and latency requirements can be  satisfied. This paper presents an approach with reserved resources shared among the UEs that allows them to carry out repetitions and reach the configured number. Each reserved resource has an optimized size to balance reliability and  resource consumption. 
+This paper presents an approach with reserved resources shared among the UEs that allows them to carry out repetitions and reach the configured number so that reliability and latency requirements can be  satisfied. Each reserved resource has an optimized size to balance reliability and  resource consumption. 
 
 \begin{thebibliography}{00}
 \bibitem{b5} R. breu, G. Berardinelli, T. Jacobsen, K. Pedersen and P. Mogensen, ``A Blind Retransmission Scheme for Ultra-Reliable and Low Latency Communications'', 2018 IEEE 87th Vehicular Technology Conference (VTC Spring), June 2018.
