@@ -240,8 +240,9 @@ To avoid that problem, the UEs are assigned to different groups of the reserved 
 \label{fig6}
 \end{figure}
 
-In each reserved resource, the collision probability is still the same as calculated from \eqref{eq9} but the overall reliability of a UE transmitting in the reserved resources at different transmission occasions will be improved with the hopping of the UEs to various groups in the different reserved resources.
 \begin{comment}
+In each reserved resource, the collision probability is still the same as calculated from \eqref{eq9} but the overall reliability of a UE transmitting in the reserved resources at different transmission occasions will be improved with the hopping of the UEs to various groups in the different reserved resources.
+
 \subsection{Explicit HARQ-ACK feedback}\label{IIFF}
 In UL GF transmission, there is no HARQ feedback transmitted from the gNB to the UE to inform whether data is decoded correctly or not. The mechanism used to terminate a transmission is time-based structure. The UEs carry out the repetitions automatically as configured and data is considered to be transmitted successfully after a certain timer configured by a parameter ConfiguredGrantTimer expires. If data is not decoded, the gNB sends a UL grant to allocate resources and request the UEs to retransmit data. With this mechanism, there is a waste of time and frequency resources for the unnecessary retransmissions in case the gNB can decode correctly data before the maximum number of repetitions or the end of the timer. Moreover, if the UEs need to use the reserved resources to attain the maximum number of repetitions, the redundant data transmitted might cause a collision with data of other UEs that really need to be transmitted in the reserved resource to achieve reliability.
 
