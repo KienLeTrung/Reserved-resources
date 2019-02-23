@@ -8,6 +8,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{verbatim}
+\usepackage{mathtools, nccmath}
 %KHOA BEGIN
 \usepackage{multirow}
 \usepackage{array}
@@ -83,10 +84,10 @@ In Release 15, new aspects have been made and agreed by 3GPP to support URLLC.
 
 One of the aspects is a permission to use larger subcarrier spacings (SCS). In 5G, SCS is allowed to have a value up to 240 kHz instead of an unique value of 15 kHz as in LTE \cite{ad2}. This decision brings down transmission duration of packets from 1ms down to 62.5$\mu$s. Mini-slot based transmission further helps to reduce latency and transmission duration of packets \cite{ad3}. A user (UE) can be scheduled in a period of one or several symbols rather than a whole slot. 
 
-The third aspect is related to the uplink (UL) transmission in grant-free (GF) region to reduce the time consumption of scheduling request (SR) and uplink grant (UL grant) \cite{ad4}. The gNB can configure a set of GF resources to one or more UEs with a periodicity defined by parameters in RRC from higher layer. When a UE is configured to transmit in GF resources, it can transmit data immediately instead of sending SR and waiting for UL Grant as grant-based (GB) transmission.
+The third aspect is related to the uplink (UL) transmission in grant-free (GF) region to reduce the time consumption of scheduling request (SR) and uplink grant (UL grant) \cite{ad4}. The base station (gNB) can configure a set of GF resources to one or more UEs with a periodicity defined by parameters in RRC from higher layer. When a UE is configured to transmit in GF resources, it can transmit data immediately instead of sending SR and waiting for UL Grant as grant-based (GB) transmission.
 
 \subsection{Repetition problem in URLLC GF UL transmission}\label{IBB}
-As mentioned in Section \ref{IAA}, in UL transmission, the gNB configures the UEs with high priority and strict requirements to transmit in the GF regions. In addition, it also configures the number of repetitions $K$ that these UEs need to carry out by a parameter repK from higher layer in order to guarantee transmission’s reliability. The UEs retransmit the packets automatically in the GF regions without waiting for HARQ feedback or UL grant from the gNB. However, the UEs are only allowed to do repetitions in one interval with a periodicity $P$ ranging from several symbols to several slots (a set of allowed periodicities $P$ is defined in \cite{ad5}) and prohibited to retransmit packet as configured by repK crossing boundary of that interval. This constraint is to help the gNB avoid a confusion in HARQ IDs of different HARQ processes. Therefore, depending on the arrival time of data in relation to the periodicity $P$, the number of repetitions might be smaller than the configured number because the UEs need to stop their transmission at the last transmission occasion in the period $P$.
+As mentioned in Section \ref{IAA}, in UL transmission, the gNB configures the UEs with high priority and strict requirements to transmit in the GF regions. In addition, it also configures the number of repetitions $K$ that these UEs need to carry out by a parameter repK from higher layer in order to guarantee transmission’s reliability. The UEs retransmit the packets automatically in the GF regions without waiting for Hybrid automatic repeat request (HARQ) feedback or UL grant from the gNB. However, the UEs are only allowed to do repetitions in one interval with a periodicity $P$ ranging from several symbols to several slots (a set of allowed periodicities $P$ is defined in \cite{ad5}) and prohibited to retransmit packet as configured by repK crossing boundary of that interval. This constraint is to help the gNB avoid a confusion in HARQ identities (IDs) of different HARQ processes. Therefore, depending on the arrival time of data in relation to the periodicity $P$, the number of repetitions might be smaller than the configured number because the UEs need to stop their transmission at the last transmission occasion in the period $P$.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.27]{fig1.png}}
@@ -142,57 +143,57 @@ The arrival of data for each UE follows a Poisson process with the average numbe
 With random access, the $N$ UEs in system are allowed to use any block in the reserved resources of a specific transmission occasion if they need to do the transmissions in order to fulfill the configured number of repetitions.
 
 The collision probability in the reserved resource at the first transmission occasion of a period (at t21 in Fig.~\ref{fig3}) is calculated as follow by considering 1 UE of interest having a transmission in the reserved resource at t21 and the rest of (N-1) UEs . 
-In time $T$ between two GF resources, the probability that one UE has one or more random transmissions is 
+In time $T$ between two GF resources, the probability that one UE has one or more random transmissions is \useshortskip
 
 \begin{equation}
 P_{data} = 1 - e^{-\lambda},\label{eq1}
 \end{equation}
 
-The GF resources in one bandwidth can be shared between a group of the UEs so collision probability in the GF resources between the UE of interest and other UEs of group is
+The GF resources in one bandwidth can be shared between a group of the UEs so collision probability in the GF resources between the UE of interest and other UEs of group is \useshortskip
 
 \begin{equation}
 P_{c\_GF} = 1 - e^{-\lambda(N_\mathrm{UE\_group}-1)},\label{eq2}
 \end{equation}
 where $N_\mathrm{UE\_group}$ is the number of the UEs that use the same frequency band of GF resources.
 
-The reserved resource at t21 is used by a UE if its data comes after the first GF transmission occasion at t11. The probability that one UE has transmission after the first GF transmission occasion in a period $P$ is
+The reserved resource at t21 is used by a UE if its data comes after the first GF transmission occasion at t11. The probability that one UE has transmission after the first GF transmission occasion in a period $P$ is \useshortskip
 
 \begin{equation}
 P_{d} = 1 - (1-P_{data})^{K-1}.\label{eq3}
 \end{equation}
 
-There is no collision in the first reserved resource of a period $P$ at t21 if no UE rather than the UE of interest has a transmission after the first GF transmission occasion at t11. The probability that no other UE from the set of $N-1$ UEs has a transmission after the first GF occasion is calculated by
+There is no collision in the first reserved resource of a period $P$ at t21 if no UE rather than the UE of interest has a transmission after the first GF transmission occasion at t11. The probability that no other UE from the set of $N-1$ UEs has a transmission after the first GF occasion is calculated by \useshortskip
 
 \begin{equation}
 P_{0} = (1-P_{d})^{N-1}.\label{eq4}
 \end{equation}
 
-In case other UEs in a set of $N-1$ UEs has a transmission after the first GF occasion, the probability that $n$  UEs have such transmission is
+In case other UEs in a set of $N-1$ UEs has a transmission after the first GF occasion, the probability that $n$  UEs have such transmission is \useshortskip
 
 \begin{equation}
 P_{n} = \binom {N-1}{n}P_{d}^{n}(1-P_{d})^{N-1-n}.\label{eq5}
 \end{equation}
 
-The probability that the UE of interest and $n$ UEs do not access the same resource block in the first reserved resource at t21 is
+The probability that the UE of interest and $n$ UEs do not access the same resource block in the first reserved resource at t21 is \useshortskip
 
 \begin{equation}
 P_{a0\_n} = (\frac {M_{1}-1}{M_{1}})^{n}.\label{eq6}
 \end{equation}
 
-The probability that the UE of interest does not collide with any other UE in the first reserved resource at t21 is calculated by
+The probability that the UE of interest does not collide with any other UE in the first reserved resource at t21 is calculated by \useshortskip
 
 \begin{equation}
 P_{sum} = \sum_{n=1}^{N-1} P_{n}P_{a0\_n}.\label{eq7}
 \end{equation}
 
-From \eqref{eq4} and \eqref{eq7}, the collision probability in the first reserved resource for the UE of interest is derived as
+From \eqref{eq4} and \eqref{eq7}, the collision probability in the first reserved resource for the UE of interest is derived as \useshortskip
 
 \begin{align}
 P_{c1} &= 1 - P_{0} - P_{sum} \nonumber\\
  &= 1 - (\frac{M_{1}-1+e^{-\lambda(K-1)}}{M_{1}})^{N-1}.\label{eq8}
 \end{align}
 
-Based on the same calculating process, a general equation of collision probability for the reserved resource at any transmission occasion in a period can be derived as
+Based on the same calculating process, a general equation of collision probability for the reserved resource at any transmission occasion in a period can be derived as \useshortskip
 
 \begin{equation}
 P_{ci} = 1 - (\frac{M_{i}-1+e^{-\lambda(K-i)}}{M_{i}})^{N-1},\label{eq9}
