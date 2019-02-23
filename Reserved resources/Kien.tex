@@ -77,7 +77,7 @@ To meet the strict requirements of Ultra-Reliable Low-Latency Communication in t
 \end{IEEEkeywords}
 
 \section{Introduction} \label{I}
-In 5G New Radio (NR), Ultra-Reliable Low-Latency Communication (URLLC) is one of the key features specified by 3GPP to serve the applications such as augmented virtual reality, tactile internet and industrial automation. This new service poses a huge challenge due to a high demand of two conflicting factors: reliability and latency. The requirement for URLLC is specified in \cite{b6}: ``A general URLLC reliability requirement for one transmission of a packet is 10\textsuperscript{-5} for 32 bytes with a user plane latency of 1 ms''. Besides the baseline URLLC performance, the next release of 3GPP aims to achieve higher requirements: ``Higher reliability (up to 10\textsuperscript{-6}), higher availability, short latency in the order of 0.5 to 1 ms, depending on the use cases (factory automation, transport industry and electrical power distribution)''\cite{b8}.
+In 5G New Radio (NR), Ultra-Reliable Low-Latency Communication (URLLC) is one of the key features specified by The 3rd Generation Partnership (3GPP) to serve the applications such as augmented virtual reality, tactile internet and industrial automation. This new service poses a huge challenge due to a high demand of two conflicting factors: reliability and latency. The requirement for URLLC is specified in \cite{b6}: ``A general URLLC reliability requirement for one transmission of a packet is 10\textsuperscript{-5} for 32 bytes with a user plane latency of 1 ms''. Besides the baseline URLLC performance, the next release of 3GPP aims to achieve higher requirements: ``Higher reliability (up to 10\textsuperscript{-6}), higher availability, short latency in the order of 0.5 to 1 ms, depending on the use cases (factory automation, transport industry and electrical power distribution)''\cite{b8}.
 
 \subsection{Techniques accepted in 3GPP Release 15}\label{IAA}
 In Release 15, new aspects have been made and agreed by 3GPP to support URLLC. 
@@ -228,9 +228,10 @@ When two or more UEs of the same group having access to a part of the reserved r
 To avoid that problem, the UEs are assigned to different groups of the reserved resources for different transmission occasions as illustrated in the red circle. The UE 1 only has the competition in both two reserved resources when both the UE 2 and 3 need to use the part of the reserved resources assigned to the UE 1 so the probability of having a competition decreases from $P_{data}$ to $P_{data}^2$ with $P_{data}$ calculated from \eqref{eq1}.
 
 
-\begin{comment}
+
 In each reserved resource, the collision probability is still the same as calculated from \eqref{eq9} but the overall reliability of a UE transmitting in the reserved resources at different transmission occasions will be improved with the hopping of the UEs to various groups in the different reserved resources.
 
+\begin{comment}
 \subsection{Explicit HARQ-ACK feedback}\label{IIFF}
 In UL GF transmission, there is no HARQ feedback transmitted from the gNB to the UE to inform whether data is decoded correctly or not. The mechanism used to terminate a transmission is time-based structure. The UEs carry out the repetitions automatically as configured and data is considered to be transmitted successfully after a certain timer configured by a parameter ConfiguredGrantTimer expires. If data is not decoded, the gNB sends a UL grant to allocate resources and request the UEs to retransmit data. With this mechanism, there is a waste of time and frequency resources for the unnecessary retransmissions in case the gNB can decode correctly data before the maximum number of repetitions or the end of the timer. Moreover, if the UEs need to use the reserved resources to attain the maximum number of repetitions, the redundant data transmitted might cause a collision with data of other UEs that really need to be transmitted in the reserved resource to achieve reliability.
 
@@ -248,11 +249,11 @@ Fig.~\ref{fig7}\subref{7a} shows collision probability in the reserved resource 
 \begin{figure}[htbp]
 \centering
 \subfloat[Collision probability with respect to the number of the UEs.\label{7a}]{%
-\includegraphics[scale=0.35]{fig7.png}}
+\includegraphics[scale=0.275]{fig7.png}}
 \hfill
 \qquad
 \subfloat[Collision probability of the second reserved resource.\label{7b}]{%
-\includegraphics[scale=0.35]{fig8.png}}
+\includegraphics[scale=0.275]{fig8.png}}
 \hfill
 \caption{Collision probability.}
 \label{fig7}
@@ -268,7 +269,7 @@ Fig.~\ref{fig7}\subref{7a} shows collision probability in the reserved resource 
 
 As mentioned in Section \ref{IIBB} and \ref{IICC}, the GF resources in a frequency band can be shared by a group of the UEs. 28 UEs calculated above can be divided in to 4 groups with 7 UEs in each group. The collision probability in the GF resources calculated from \eqref{eq2} is $7.5\times10^{-4}$ that is approximate to the collision probability of 10\textsuperscript{-3} in the reserved resource.
 
-When all the parameters ($\lambda, N, K$ and $P_{ci}$) are kept the same, the sizes of the reserved resources in the second and the third transmission occasions are calculated as
+When all the parameters ($\lambda, N, K$ and $P_{ci}$) are kept the same, the sizes of the reserved resources in the second and the third transmission occasions are calculated as shown in Table~\ref{tab1}.
 %KHOA BEGIN
 % THem ti khoang trong' duoi table, chon medskip, bigskip hoac smallskip
 %\smallskip
@@ -295,7 +296,7 @@ When all the parameters ($\lambda, N, K$ and $P_{ci}$) are kept the same, the si
 %\medskip
 %KHOA END
 
-The percentage of resources saved in comparison to using the same size of 10 resource blocks for all the resources is: $(1 - (10+7+3)/(10\times3))\times100\% = 33\%$.
+The percentage of resources saved in comparison to using the same size of 10 resource blocks for all the resources in \cite{b5} and \cite{b7} is: $(1 - (10+7+3)/(10\times3))\times100\% = 33\%$.
 
 Fig.~\ref{fig7}\subref{7b} illustrates collision probability with respect to the reserved resource's size in the second transmission occasion.
 
@@ -310,7 +311,7 @@ Fig.~\ref{fig7}\subref{7b} illustrates collision probability with respect to the
 Another scenario is considered with a bigger number of repetitions: $M_1=10, K=8, \lambda=1.25\times10^{-4}$ .
 
 The system can support 12 UEs in the first reserved resources to achieve Pc target of 10\textsuperscript{-3}. These UEs can be divided into 2 groups with 6 UEs in one group that each group uses the GF resources in one bandwidth part. The collision probability in GF regions of a group of 6 UEs as scheduled above is: $6.25\times10^{-4}$.
-With 12 UEs, the sizes of the reserved resources in the transmission occasions are
+With 12 UEs, the sizes of the reserved resources in the transmission occasions are shown in Table~\ref{tab2}.
 
 \begin{table}[htbp]
 \caption{Sizes of the reserved resources with $K=8$ and random access}
@@ -330,16 +331,18 @@ With 12 UEs, the sizes of the reserved resources in the transmission occasions a
 \end{center}
 \end{table}
 
-The percentage of resources saved in comparison to using the same size of 10 resource blocks for all the resources is: $(1 - (10+8+7+6+4+3+2)/(10\times7)) \times100\% = 42.86\%$
+The percentage of resources saved in comparison to using the same size of 10 resource blocks for all the resources in \cite{b5} and \cite{b7} is: $(1 - (10+8+7+6+4+3+2)/(10\times7)) \times100\% = 42.86\%$
 
 As can be seen from two scenarios, the use of reserved resources with optimization from \eqref{eq9} brings an efficiency of resource utilization, especially for high configured number of repetitions. The resources needed are less than the approach of choosing blindly the same sizes for all reserved resources in different transmission occasions while still guarantees the number of repetitions with a target reliability.
+
+Moreover, in the conventional scheme in 3GPP Release 15, the UE needs to wait until the next period if it cannot do the configured number of repetitions in the current period to fulfill the reliability requirement. Therefore, with $K=4$ and 4 transmission occasions in a period, in the worst case, the UE must wait 3 transmission occasions equal to 3 slots or 0.75ms with SCS 60kHz. This latency is close to the URLLC requirement of 1ms and causes the UEs not be able to make 4 repetitions as configured in the next period. In comparison, the proposed scheme allows the UE to start the transmission immediately and reach the configured number of repetitions in target latency of 1ms (4 repetitions consume 1ms with SCS 60kHz) as well as meet the reliability requirement.
 
 \subsection{Group access to the reserved resources}\label{IIIBB}
 Group access is simulated with the parameters as the first scenario in random access: $N = 28, K = 4, \lambda = 1.25\times10^{-4}$.
 
 28 UEs are divided into 4 groups of 7 UEs to access the reserved resources. Each group is only allowed to access the part of the reserved resources pre-configured to them. 
 
-To satisfy Pc=10\textsuperscript{-3}, the sizes of the reserved resources are
+To satisfy Pc=10\textsuperscript{-3}, the sizes of the reserved resources are shown in Table~\ref{tab3}.
 
 \begin{table}[htbp]
 \caption{Sizes of the reserved resources with K=4 and group access}
